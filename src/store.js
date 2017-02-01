@@ -1,19 +1,37 @@
-import {dispatch} from 'd3-dispatch';
+import Dispatcher from './Dispatcher';
 
-export default function(actions) {
-  var dispatcher = dispatch('changed');
+export default function(action) {
+  var dispatcher = Dispatcher('changed');
 
   var todos = [];
 
-  actions.on('item-add', function() {
-    todos.push('todo');
-    dispatcher.call('changed');
-  });
+  var triggerChange = function(f) {
+    return function(data) {
+      f(data);
+      dispatcher('changed');
+    };
+  };
 
-  actions.on('item-remove', function() {
-    todos.pop();
-    dispatcher.call('changed');
-  });
+  action.on('item-add', triggerChange(function(text) {
+    todos.push({
+      text: text,
+      indent: 0,
+      done: false
+    });
+  }));
+
+  action.on('item-remove', triggerChange(function(key) {
+    todos.splice(key, 1);
+  }));
+
+  action.on('item-move', triggerChange(function(d) {
+    var items = todos.splice(d.from, 1);
+    todos.splice(d.to, 0, items[0]);
+  }));
+
+  action.on('item-toggle', triggerChange(function(key) {
+    todos[key].done = !todos[key].done;
+  }));
 
   var store = {
     getState: function() {

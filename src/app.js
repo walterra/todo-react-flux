@@ -1,19 +1,18 @@
-import {dispatch} from 'd3-dispatch';
-import store from './store';
+import Dispatcher from './dispatcher';
+import Store from './store';
 
 export default function(id) {
-  var actions = dispatch(
+  var action = Dispatcher(
     'item-add',
     'item-remove'
   );
 
-  var s = new store(actions);
+  var store = new Store(action);
 
-  s.on('changed', function() {
-    console.log('todos', s.getState());
+  store.on('changed', function() {
+    console.log('todos', store.getState());
   });
 
-  actions.call('add');
-  actions.call('add');
-
+  action('item-add');
+  action('item-add');
 }

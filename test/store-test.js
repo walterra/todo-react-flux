@@ -1,37 +1,60 @@
-import {dispatch} from 'd3-dispatch';
-import store from '../src/store';
+import Dispatcher from '../src/dispatcher';
+import Store from '../src/store';
 
 import test from 'tape';
 
 export default test('store.', function(t) {
-  var actions = dispatch(
+  var action = Dispatcher(
     'item-add',
-    'item-remove'
+    'item-remove',
+    'item-move',
+    'item-toggle'
   );
 
-  var s;
+  var store;
+  var state;
 
-  t.plan(3);
+  t.plan(8);
 
   t.doesNotThrow(function() {
-    s = new store(actions);
+    store = new Store(action);
+    state = store.getState();
   }, 'Initialize store.');
 
+  t.equal(state.length, 0, 'Initial state is empty.');
+
   var counter = 0;
-  s.on('changed', function() {
+  store.on('changed', function() {
     counter++;
-    var state = s.getState();
+    state = store.getState();
     switch(counter) {
     case 1:
-      t.deepEqual(state, ['todo'], 'Add first item.');
+      t.equal(state.length, 1, 'Add first item.');
       break;
     case 2:
-      t.deepEqual(state, ['todo', 'todo'], 'Add second item.');
+      t.equal(state.length, 2, 'Add second item.');
+      break;
+    case 3:
+      t.equal(state[0].text, 'My second item.', 'Removed first item.');
+      break;
+    case 5:
+      t.equal(state[0].text, 'Another item.', 'Moved an item.');
+      t.equal(state[1].done, false, 'Item not done.');
+      break;
+    case 6:
+      t.equal(state[1].done, true, 'Item done.');
       break;
     default:
     }
   });
 
-  actions.call('item-add');
-  actions.call('item-add');
+  action('item-add', 'My first item.');
+  action('item-add', 'My second item.');
+  action('item-remove', 0);
+  action('item-add', 'Another item.');
+  action('item-move', {
+    from: 1,
+    to: 0
+  });
+  action('item-toggle', 1);
 });
