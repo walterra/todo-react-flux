@@ -6,21 +6,17 @@ export class TodoComponent extends React.Component {
   }
 
   render() {
-    var todos = this.props.todos;
-    var action = this.props.action;
+    let todos = this.props.todos;
+    let action = this.props.action;
 
-    var actionFactory = actionName => {
+    const actionFactory = actionName => {
       return (e) => {
         action(actionName, parseInt(e.target.dataset.id));
         e.preventDefault();
       };
     };
 
-    var edit = e => {
-      action('item-edit', parseInt(e.target.dataset.id));
-    };
-
-    var indent = e => {
+    const indent = e => {
       console.log('indent');
       action('item-indent', {
         key: parseInt(e.target.dataset.id),
@@ -28,8 +24,8 @@ export class TodoComponent extends React.Component {
       });
     };
 
-    var classNames = (todo) => {
-      var names = [];
+    const classNames = (todo) => {
+      let names = [];
       if (todo.hover) {
         names.push('hover');
       }
@@ -39,10 +35,10 @@ export class TodoComponent extends React.Component {
       return names.join(' ');
     };
 
-    var text = (todo, i) => {
-      var inputState;
+    const text = (todo, i) => {
+      let inputState;
 
-      var submit = (e) => {
+      const submit = (e) => {
         action('item-edit', i);
         e.preventDefault();
       };
@@ -60,7 +56,7 @@ export class TodoComponent extends React.Component {
         }} />;
     };
 
-    var items = todos.map(
+    const items = todos.map(
       (todo, i) => 
         <li 
           key={i}
@@ -95,7 +91,7 @@ export class TodoComponent extends React.Component {
         </li>
     );
 
-    var submit = (e) => {
+    const submit = (e) => {
       if (this.input.value.length > 0) {
         action('item-add', this.input.value);
         this.input.value = '';

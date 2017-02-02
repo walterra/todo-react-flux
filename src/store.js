@@ -1,11 +1,11 @@
 import Dispatcher from './Dispatcher';
 
-export default (action) => {
-  var dispatcher = Dispatcher('changed');
+export default (action, reset) => {
+  const dispatcher = Dispatcher('changed');
 
-  var todos = [];
+  let todos = [];
 
-  var subscriber = (a, c) => {
+  const subscriber = (a, c) => {
     action.on(a, (data) => {
       c(data);
       dispatcher('changed', todos);
@@ -28,7 +28,7 @@ export default (action) => {
   });
 
   subscriber('item-move.store', d => {
-    var items = todos.splice(d.from, 1);
+    let items = todos.splice(d.from, 1);
     todos.splice(d.to, 0, items[0]);
   });
 
@@ -54,8 +54,8 @@ export default (action) => {
     }
 
     // check if the position allows indentation
-    var currentItem = todos[d.key];
-    var previousItem = todos[d.key - 1];
+    let currentItem = todos[d.key];
+    let previousItem = todos[d.key - 1];
     
     console.log('indent', currentItem.indent, previousItem.indent);
 
@@ -78,26 +78,25 @@ export default (action) => {
     dispatcher('changed', todos);
   });
 
-  var store = {
+  const store = {
     getState: function() {
       return todos;
     },
     // http://stackoverflow.com/a/38335479/2266116
     on: function() {
-      var value = dispatcher.on.apply(dispatcher, arguments);
+      let value = dispatcher.on.apply(dispatcher, arguments);
       return value === dispatcher ? store : value;
     }
   };
 
-  if (typeof(Storage) !== 'undefined') {
+  if (typeof(Storage) !== 'undefined' && !reset) {
     store.on('changed.localStorage', (state) => {
       localStorage.setItem('todos', JSON.stringify(state));
     });
     try {
-        var localTodos = JSON.parse(localStorage.getItem('todos'));
+        let localTodos = JSON.parse(localStorage.getItem('todos'));
         if (Array.isArray(localTodos)) {
           todos = localTodos;
-          dispatcher('changed', todos);
         }
     } catch (e) {
       console.log('error', e);

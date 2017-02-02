@@ -4,11 +4,12 @@ import Store from '../src/store';
 import test from 'tape';
 
 export default test('store.', function(t) {
-  var action = Dispatcher(
+  const action = Dispatcher(
     'item-add',
     'item-remove',
     'item-move',
-    'item-toggle'
+    'item-toggle',
+    'item-indent'
   );
 
   var store;
@@ -17,16 +18,15 @@ export default test('store.', function(t) {
   t.plan(8);
 
   t.doesNotThrow(function() {
-    store = new Store(action);
+    store = Store(action, true);
     state = store.getState();
   }, 'Initialize store.');
 
   t.equal(state.length, 0, 'Initial state is empty.');
 
   var counter = 0;
-  store.on('changed', function() {
+  store.on('changed', function(state) {
     counter++;
-    state = store.getState();
     switch(counter) {
     case 1:
       t.equal(state.length, 1, 'Add first item.');

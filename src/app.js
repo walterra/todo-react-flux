@@ -3,7 +3,7 @@ import Store from './store';
 import View from './view';
 
 export default id => {
-  var action = Dispatcher(
+  const action = Dispatcher(
     'item-add',
     'item-remove',
     'item-move',
@@ -19,8 +19,8 @@ export default id => {
   View(id, action, store);
 
   if (store.getState().length === 0) {
-    // This just demonstrate that we can trigger actions
-    // programmatically instead of via interface only
+    // This just demonstrates that we can trigger actions
+    // programmatically instead of via the GUI only
     action('item-add', 'Some Todo.');
     action('item-add', 'Another Todo.');
   }
