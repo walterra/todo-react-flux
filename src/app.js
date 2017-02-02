@@ -1,18 +1,27 @@
 import Dispatcher from './dispatcher';
 import Store from './store';
+import View from './view';
 
-export default function(id) {
+export default id => {
   var action = Dispatcher(
     'item-add',
-    'item-remove'
+    'item-remove',
+    'item-move',
+    'item-toggle',
+    'item-indent',
+    'item-focus',
+    'item-blur',
+    'item-update'
   );
 
-  var store = new Store(action);
+  const store = Store(action);
 
-  store.on('changed', function() {
-    console.log('todos', store.getState());
-  });
+  View(id, action, store);
 
-  action('item-add');
-  action('item-add');
+  if (store.getState().length === 0) {
+    // This just demonstrate that we can trigger actions
+    // programmatically instead of via interface only
+    action('item-add', 'Some Todo.');
+    action('item-add', 'Another Todo.');
+  }
 }
