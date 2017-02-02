@@ -2,6 +2,66 @@
 <head>
   <meta charset="utf-8">
   <title>Todo</title>
+  <script src="https://use.fontawesome.com/89bdf6039a.js"></script>
+  <style>
+    body {
+      background-color: #f5f8fa;
+      font-family: sans-serif;
+    }
+
+    #app {
+      width: 500px;
+      margin: 0 auto;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #eee;
+    }
+
+    div.todos ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    div.todos li {
+      padding: 4px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    div.todos li.hover {
+      background-color: #f3f3f3;
+    }
+
+    div.todos li.indent {
+      padding-left: 20px;
+    }
+
+    div.todos li input {
+      display: inline;
+    }
+
+    div.todos li input[type="text"] {
+      font-family: sans-serif;
+      width: 300px;
+      font-size: 14px;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+    }
+
+    div.todos li input.done {
+      text-decoration: line-through;
+    }
+
+    div.todos li span {
+      float: right;
+    }
+
+    div.todos li span i {
+      padding-right: 4px;
+    }
+
+    </style>
 </head>
 <body>
   <div id="app"></div>
