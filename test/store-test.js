@@ -9,7 +9,10 @@ export default test('store.', function(t) {
     'item-remove',
     'item-move',
     'item-toggle',
-    'item-indent'
+    'item-indent',
+    'item-focus',
+    'item-blur',
+    'item-update'
   );
 
   var store;
