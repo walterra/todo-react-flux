@@ -63,7 +63,7 @@ export default (action, reset) => {
       }
 
       return currentItem;
-    })
+    });
   };
 
   var collapse = key => {
@@ -149,14 +149,12 @@ export default (action, reset) => {
       localStorage.setItem('todos', JSON.stringify(state));
     });
     try {
-        let localTodos = JSON.parse(localStorage.getItem('todos'));
-        if (Array.isArray(localTodos)) {
-          todos = localTodos;
-        }
-    } catch (e) {
-      console.log('error', e);
-    }
+      let localTodos = JSON.parse(localStorage.getItem('todos'));
+      if (Array.isArray(localTodos)) {
+        todos = localTodos;
+      }
+    } catch (e) {}
   }
 
   return store;
-}
+};

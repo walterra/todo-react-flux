@@ -12,7 +12,8 @@ export default test('store.', function(t) {
     'item-indent',
     'item-focus',
     'item-blur',
-    'item-update'
+    'item-update',
+    'item-collapse'
   );
 
   var store;

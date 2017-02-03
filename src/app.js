@@ -25,4 +25,4 @@ export default id => {
     action('item-add', 'Some Todo.');
     action('item-add', 'Another Todo.');
   }
-}
+};
