@@ -7,7 +7,6 @@ export class TodoComponent extends React.Component {
 
   actionFactory(actionName, id) {
     return (e) => {
-      console.log('action', actionName, id);
       this.props.action(actionName, parseInt(id));
       e.preventDefault();
     };
@@ -25,8 +24,8 @@ export class TodoComponent extends React.Component {
     if (todo.hover) {
       names.push('hover');
     }
-    if (todo.indent > 0) {
-      names.push('indent');
+    if (!todo.show) {
+      names.push('hide');
     }
     return names.join(' ');
   }
@@ -66,6 +65,13 @@ export class TodoComponent extends React.Component {
           className={this.classNames(todo)}
           style={style}
         >
+          {(todo.collapsable) ?
+            <i
+              key={'collapse_' + i}
+              onClick={this.actionFactory('item-collapse', i)}
+              className={(todo.collapsed) ? 'collapse fa fa-angle-right' : 'collapse fa fa-angle-down'} />
+            : <span className="collapse"></span>
+          }
           <i
             key={'check_' + i}
             onClick={this.actionFactory('item-toggle', i)}
@@ -75,7 +81,7 @@ export class TodoComponent extends React.Component {
           {this.text(todo, i)}
 
           {(todo.hover) ?
-            <span>
+            <span className="options">
               <i
                 key={'outdent_' + i}
                 onClick={this.indent.bind(this, i, 'up')}

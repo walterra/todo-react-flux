@@ -11,7 +11,8 @@ export default id => {
     'item-indent',
     'item-focus',
     'item-blur',
-    'item-update'
+    'item-update',
+    'item-collapse'
   );
 
   const store = Store(action);

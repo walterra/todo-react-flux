@@ -17,6 +17,7 @@ export default (action, reset) => {
       text: text,
       indent: 0,
       done: false,
+      collapsable: false,
       collapsed: false,
       show: true,
       hover: false
@@ -47,6 +48,43 @@ export default (action, reset) => {
     todos[key].hover = false;
   });
 
+  var checkTree = () => {
+    todos = todos.map((todo, i) => {
+      let currentItem = todo;
+      let nextItem = todos[i + 1];
+      
+      currentItem.collapsable = (
+        typeof nextItem !== 'undefined' &&
+        nextItem.indent > currentItem.indent
+      ) ? true : false;
+      
+      if (!currentItem.collapsable) {
+        currentItem.collapsed = false;
+      }
+
+      return currentItem;
+    })
+  };
+
+  var collapse = key => {
+    if (todos[key].collapsable) {
+      todos[key].collapsed = !todos[key].collapsed;
+      // show/hide the subtree
+      for (let i = (key + 1); i < todos.length; i++) {
+        let todo = todos[i];
+        if (todo.indent > todos[key].indent) {
+          todo.show = (todos[key].collapsed) ? false : true;
+          if (todo.collapsable) {
+            todo.collapsed = todos[key].collapsed;
+          }
+        } else {
+          break;
+        }
+      }
+    }
+  };
+  subscriber('item-collapse.store', collapse);
+
   action.on('item-indent.store', d => {
     // the first item doesn't support indentation
     if (d.key === 0) {
@@ -67,6 +105,7 @@ export default (action, reset) => {
           break;
         }
       }
+      // TODO check if the item is now part of another hidden subtree
       changed = true;
     } else if (d.direction === 'up' && currentItem.indent > 0) {
       currentItem.indent--;
@@ -78,10 +117,15 @@ export default (action, reset) => {
           break;
         }
       }
+      // TODO check collapsable status
+
       changed = true;
     }
 
-    if (changed) dispatcher('changed', todos);
+    if (changed) {
+      checkTree();
+      dispatcher('changed', todos);
+    }
   });
 
   action.on('item-update.store', d => {
