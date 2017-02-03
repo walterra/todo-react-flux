@@ -24,3 +24,9 @@ npm run-script start
 nnpm run-script watch
 ```
 
+Next Steps:
+
+- Improve tree handling and fix bugs when the features of indentation, collapsing and deletion are used
+- Better structure of the React Code with possible multiple components
+- More test coverage esp. the React part
+- Implement keyboard short cuts and improve accessbility
