@@ -53,24 +53,35 @@ export default (action, reset) => {
       return;
     }
 
-    // check if the position allows indentation
     let currentItem = todos[d.key];
     let previousItem = todos[d.key - 1];
-    
-    console.log('indent', currentItem.indent, previousItem.indent);
-
-    if (currentItem.indent === previousItem.indent && d.direction === 'down') {
-      console.log('down!');
+    let changed = false;
+    // indentation with support for indenting subtrees
+    if (d.direction === 'down' && currentItem.indent <= previousItem.indent) {
       currentItem.indent++;
-      dispatcher('changed', todos);
-    } else if (currentItem.indent < previousItem.indent && d.direction === 'down') {
-      currentItem.indent = previousItem.indent;
-      dispatcher('changed', todos);
-    } else if (currentItem.indent === (previousItem.indent + 1) && d.direction === 'up') {
-      console.log('up!');
+      for (let i = (d.key + 1); i < todos.length; i++) {
+        let todo = todos[i];
+        if (todo.indent >= currentItem.indent) {
+          todo.indent++;
+        } else {
+          break;
+        }
+      }
+      changed = true;
+    } else if (d.direction === 'up' && currentItem.indent > 0) {
       currentItem.indent--;
-      dispatcher('changed', todos);
+      for (let i = (d.key + 1); i < todos.length; i++) {
+        let todo = todos[i];
+        if (todo.indent > currentItem.indent) {
+          todo.indent--;
+        } else {
+          break;
+        }
+      }
+      changed = true;
     }
+
+    if (changed) dispatcher('changed', todos);
   });
 
   action.on('item-update.store', d => {

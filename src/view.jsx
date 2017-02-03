@@ -5,90 +5,100 @@ export class TodoComponent extends React.Component {
     super(props);
   }
 
+  actionFactory(actionName, id) {
+    return (e) => {
+      console.log('action', actionName, id);
+      this.props.action(actionName, parseInt(id));
+      e.preventDefault();
+    };
+  }
+
+  indent(id, direction) {
+    this.props.action('item-indent', {
+      key: parseInt(id),
+      direction: direction
+    });
+  }
+
+  classNames(todo) {
+    let names = [];
+    if (todo.hover) {
+      names.push('hover');
+    }
+    if (todo.indent > 0) {
+      names.push('indent');
+    }
+    return names.join(' ');
+  }
+
+  text(todo, i) {
+    const action = this.props.action;
+    let inputState;
+
+    return <input 
+      key={'text_' + i}
+      className={(todo.done) ? 'done' : ''}
+      type="text"
+      value={todo.text}
+      ref={input => inputState = input} 
+      onChange={() => {
+        action('item-update', {
+          key: i,
+          text: inputState.value
+        });
+      }} />;
+  }
+
   render() {
-    let todos = this.props.todos;
-    let action = this.props.action;
-
-    const actionFactory = actionName => {
-      return (e) => {
-        action(actionName, parseInt(e.target.dataset.id));
-        e.preventDefault();
-      };
-    };
-
-    const indent = e => {
-      console.log('indent');
-      action('item-indent', {
-        key: parseInt(e.target.dataset.id),
-        direction: 'down'
-      });
-    };
-
-    const classNames = (todo) => {
-      let names = [];
-      if (todo.hover) {
-        names.push('hover');
-      }
-      if (todo.indent > 0) {
-        names.push('indent');
-      }
-      return names.join(' ');
-    };
-
-    const text = (todo, i) => {
-      let inputState;
-
-      const submit = (e) => {
-        action('item-edit', i);
-        e.preventDefault();
-      };
-
-      return <input 
-        className={(todo.done) ? 'done' : ''}
-        type="text"
-        value={todo.text}
-        ref={input => inputState = input} 
-        onChange={() => {
-          action('item-update', {
-            key: i,
-            text: inputState.value
-          });
-        }} />;
-    };
+    const todos = this.props.todos;
+    const action = this.props.action;
 
     const items = todos.map(
-      (todo, i) => 
-        <li 
-          key={i}
-          data-id={i}
-          onMouseEnter={actionFactory('item-focus')}
-          onMouseLeave={actionFactory('item-blur')}
-          className={classNames(todo)}
+      (todo, i) => {
+        const style = {
+          paddingLeft: (todo.indent * 20) + 'px'
+        };
+
+        return <li 
+          key={'li_' + i}
+          onMouseEnter={this.actionFactory('item-focus', i)}
+          onMouseLeave={this.actionFactory('item-blur', i)}
+          className={this.classNames(todo)}
+          style={style}
         >
-          <input
-            data-id={i}
-            type="checkbox"
-            checked={todo.done}
-            onChange={actionFactory('item-toggle')} />
+          <i
+            key={'check_' + i}
+            onClick={this.actionFactory('item-toggle', i)}
+            className={(todo.done) ? 'fa fa-check-square' : 'fa fa-square-o'}
+            aria-hidden="true"></i>
 
-          {text(todo, i)}
+          {this.text(todo, i)}
 
-          {(todo.hover) ? 
+          {(todo.hover) ?
             <span>
-            <i
-              data-id={i}
-              onClick={indent}
-              className="fa fa-indent"
-              aria-hidden="true"></i>
-            <i
-              data-id={i}
-              onClick={actionFactory('item-remove')}
-              className="fa fa-trash-o" 
-              aria-hidden="true"></i>
+              <i
+                key={'outdent_' + i}
+                onClick={this.indent.bind(this, i, 'up')}
+                className="fa fa-outdent"
+                aria-hidden="true"></i>
+              <i
+                key={'indent_' + i}
+                onClick={this.indent.bind(this, i, 'down')}
+                className="fa fa-indent"
+                aria-hidden="true"></i>
+              {/* deleting a item works but it can break the tree structure */}
+              {/*
+              <i
+                key={'delete_'  + i}
+                onClick={this.actionFactory('item-remove', i)}
+                className="fa fa-trash-o" 
+                aria-hidden="true"></i>
+              */}
             </span>
             : ''
           }
-        </li>
+        </li>;
+      }
     );
 
     const submit = (e) => {
