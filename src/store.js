@@ -25,7 +25,33 @@ export default (action, reset) => {
   });
 
   subscriber('item-remove.store', key => {
-    todos.splice(key, 1);
+    let deleteCount = 1;
+    // delete also the todos' subtree if there is one
+    if (todos[key].collapsable) {
+      for (let i = (key + 1); i < todos.length; i++) {
+        if (todos[i].indent > todos[key].indent) {
+          deleteCount++;
+        } else {
+          break;
+        }
+      }
+    }
+
+    todos.splice(key, deleteCount);
+
+    // check if the previous item was collapsable and still is
+    if (key > 0 && todos.length > 1) {
+      let previousItem = todos[key - 1];
+      // the following is now the first item which wasn't deleted
+      let nextItem = todos[key];
+      if (nextItem.indent > previousItem.indent) {
+        previousItem.collapsable = true;
+        previousItem.collapsed = false;
+      } else {
+        previousItem.collapsable = false;
+        previousItem.collapsed = false;
+      }
+    }
   });
 
   subscriber('item-move.store', d => {

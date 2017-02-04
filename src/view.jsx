@@ -92,14 +92,11 @@ export class TodoComponent extends React.Component {
                 onClick={this.indent.bind(this, i, 'down')}
                 className="fa fa-indent"
                 aria-hidden="true"></i>
-              {/* deleting a item works but it can break the tree structure */}
-              {/*
               <i
                 key={'delete_'  + i}
                 onClick={this.actionFactory('item-remove', i)}
                 className="fa fa-trash-o" 
                 aria-hidden="true"></i>
-              */}
             </span>
             : ''
           }
