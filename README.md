@@ -30,3 +30,4 @@ Next Steps:
 - Better structure of the React Code with possible multiple components
 - More test coverage esp. the React part
 - Implement keyboard short cuts and improve accessbility
+- Look into ways to reduce bundle file size
