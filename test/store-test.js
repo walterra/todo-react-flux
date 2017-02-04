@@ -13,7 +13,9 @@ export default test('store.', function(t) {
     'item-focus',
     'item-blur',
     'item-update',
-    'item-collapse'
+    'item-collapse',
+    'item-focus-remove',
+    'item-blur-remove'
   );
 
   var store;
