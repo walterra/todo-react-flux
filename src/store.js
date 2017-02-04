@@ -148,7 +148,20 @@ export default (action, reset) => {
           break;
         }
       }
-      // TODO check if the item is now part of another hidden subtree
+
+      // if the item is now part of a hidden subtree, we show this subtree again
+      if (!previousItem.show) {
+        for (let i = (d.key -1 ); i >= 0; i--) {
+          let todo = todos[i];
+          if (todo.show) {
+            if (todo.indent < currentItem.indent && todo.collapsed) {
+              collapse(i);
+            }
+            break;
+          }
+        }
+      }
+
       changed = true;
     } else if (d.direction === 'up' && currentItem.indent > 0) {
       currentItem.indent--;
