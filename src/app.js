@@ -12,7 +12,9 @@ export default id => {
     'item-focus',
     'item-blur',
     'item-update',
-    'item-collapse'
+    'item-collapse',
+    'item-focus-remove',
+    'item-blur-remove'
   );
 
   const store = Store(action);

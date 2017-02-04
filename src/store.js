@@ -20,7 +20,8 @@ export default (action, reset) => {
       collapsable: false,
       collapsed: false,
       show: true,
-      hover: false
+      hover: false,
+      removeHint: false
     });
   });
 
@@ -44,7 +45,7 @@ export default (action, reset) => {
       let previousItem = todos[key - 1];
       // the following is now the first item which wasn't deleted
       let nextItem = todos[key];
-      if (nextItem.indent > previousItem.indent) {
+      if (nextItem.indent && nextItem.indent > previousItem.indent) {
         previousItem.collapsable = true;
         previousItem.collapsed = false;
       } else {
@@ -52,6 +53,22 @@ export default (action, reset) => {
         previousItem.collapsed = false;
       }
     }
+  });
+
+  subscriber('item-focus-remove.store', key => {
+    if (todos[key].collapsable) {
+      for (let i = (key + 1); i < todos.length; i++) {
+        if (todos[i].indent > todos[key].indent) {
+          todos[i].removeHint = true;
+        } else {
+          break;
+        }
+      }
+    }
+  });
+
+  subscriber('item-blur-remove.store', key => {
+    todos = todos.map(todo => Object.assign(todo, { removeHint: false }));
   });
 
   subscriber('item-move.store', d => {

@@ -80,7 +80,7 @@ export class TodoComponent extends React.Component {
 
           {this.text(todo, i)}
 
-          {(todo.hover) ?
+          {todo.hover &&
             <span className="options">
               <i
                 key={'outdent_' + i}
@@ -95,10 +95,16 @@ export class TodoComponent extends React.Component {
               <i
                 key={'delete_'  + i}
                 onClick={this.actionFactory('item-remove', i)}
+                onMouseEnter={this.actionFactory('item-focus-remove', i)}
+                onMouseLeave={this.actionFactory('item-blur-remove', i)}
                 className="fa fa-trash-o" 
                 aria-hidden="true"></i>
             </span>
-            : ''
+          }
+          {todo.removeHint &&
+            <span className="options">
+              <i className="fa fa-trash-o hint" aria-hidden="true"></i>
+            </span>
           }
         </li>;
       }

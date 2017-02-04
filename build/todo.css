@@ -2388,3 +2388,6 @@ body {
 .todos ul li i {
   padding-right: 4px;
 }
+.todos ul li i.hint {
+  color: #ccc;
+}
