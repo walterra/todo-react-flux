@@ -26,8 +26,8 @@ nnpm run-script watch
 
 Next Steps:
 
-- Improve tree handling and fix bugs when the features of indentation, collapsing and deletion are used
+- ~~Improve tree handling and fix bugs when the features of indentation, collapsing and deletion are used~~
 - Better structure of the React Code with possible multiple components
 - More test coverage esp. the React part
 - Implement keyboard short cuts and improve accessbility
-- Look into ways to reduce bundle file size
+- ~~Look into ways to reduce bundle file size~~ While the non-minified version is more than 2MB, the minified version is actually only about 200KB
