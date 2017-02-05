@@ -30,4 +30,5 @@ Next Steps:
 - Better structure of the React Code with possible multiple components
 - More test coverage esp. the React part
 - Implement keyboard short cuts and improve accessbility
+- Optimize to make the app responsive and more suitable for mobile devices
 - ~~Look into ways to reduce bundle file size~~ While the non-minified version is more than 2MB, the minified version is actually only about 200KB
