@@ -67,7 +67,7 @@ export default (action, reset) => {
     }
   });
 
-  subscriber('item-blur-remove.store', key => {
+  subscriber('item-blur-remove.store', () => {
     todos = todos.map(todo => Object.assign(todo, { removeHint: false }));
   });
 
@@ -209,7 +209,9 @@ export default (action, reset) => {
       if (Array.isArray(localTodos)) {
         todos = localTodos;
       }
-    } catch (e) {}
+    } catch (e) {
+      // do not crash
+    }
   }
 
   return store;

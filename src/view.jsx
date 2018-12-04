@@ -135,3 +135,8 @@ export class TodoComponent extends React.Component {
     );
   }
 }
+
+TodoComponent.propTypes = {
+  action: React.PropTypes.func,
+  todos: React.PropTypes.array
+};

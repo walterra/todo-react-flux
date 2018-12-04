@@ -6,10 +6,10 @@
   "globals": {
     "ENV": true
   },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-      "sourceType": "module"
-  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "rules": {
       "indent": [
           "error",
