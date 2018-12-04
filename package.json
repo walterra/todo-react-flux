@@ -61,6 +61,7 @@
     "uglify-js": "2"
   },
   "resolutions": {
+    "cryptiles": ">=4.1.2",
     "merge": ">=1.2.1",
     "minimatch": ">=3.0.2"
   }
