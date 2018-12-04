@@ -30,6 +30,7 @@
     "react-dom": "15.4.2"
   },
   "devDependencies": {
+    "brace-expansion": "^1.1.11",
     "catw": "^1.0.1",
     "eslint": "^3.8.1",
     "eslint-config-es5": "^0.5.0",
@@ -60,6 +61,7 @@
     "uglify-js": "2"
   },
   "resolutions": {
-    "merge": ">=1.2.1"
+    "merge": ">=1.2.1",
+    "minimatch": ">=3.0.2"
   }
 }
