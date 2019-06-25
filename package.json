@@ -11,7 +11,7 @@
     "test": "karma start karma.config.js",
     "build-css": "lessc src/less/styles.less > build/todo.css",
     "watch-css": "catw -w 'src/less/**/*.less' -c 'npm run build-css'",
-    "prepublish": "npm run test && uglifyjs build/todo-bundle.js -c -m -o build/todo-bundle.min.js",
+    "prepare": "npm run test && uglifyjs build/todo-bundle.js -c -m -o build/todo-bundle.min.js",
     "postinstall": "cp -R node_modules/font-awesome/fonts ./"
   },
   "repository": {
@@ -32,7 +32,7 @@
   "devDependencies": {
     "brace-expansion": "^1.1.11",
     "catw": "^1.0.1",
-    "eslint": "^3.8.1",
+    "eslint": ">=4.18.2",
     "eslint-config-es5": "^0.5.0",
     "eslint-plugin-react": "^6.10.3",
     "faucet": "0.0.1",
